@@ -7,9 +7,9 @@ init();
 
 // Displaying logo text and loading in the main prompts
 function init() {
-    const firstText =({ name: "Employee Manager" }).render();
+    const titleText =({ name: "Employee Manager" }).render();
 
-    console.log(firstText);
+    console.log(titleText);
 
     loadMainPrompts();
 }
