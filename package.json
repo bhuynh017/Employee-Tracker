@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/bhuynh017/Employee-Tracker#readme",
   "dependencies": {
+    "asciiart-logo": "^0.2.7",
     "console.table": "^0.10.0",
     "inquirer": "^9.1.4",
     "mysql2": "^2.3.3"
