@@ -13,3 +13,7 @@ function init() {
 
     loadMainPrompts();
 }
+
+function loadMainPrompts() {
+    prompt
+}
