@@ -53,9 +53,14 @@ findAllEmployees() {
     );
   }
 
-  // Create a new role
+  // This method creates a new role. It returns a promise executed by using query.
   createRole(role) {
     return this.connection.promise().query("INSERT INTO role SET ?", role);
+  }
+
+  // Removes a role previously defined in the DB Class. It uses the promise method from the connection property and is passed as a string to the query method. 
+  removeRole(roleId) {
+    return this.connection.promise().query("DELETE FROM role WHERE id = ?", roleId);
   }
 
   
