@@ -63,4 +63,50 @@ findAllEmployees() {
     return this.connection.promise().query("DELETE FROM role WHERE id = ?", roleId);
   }
 
-  
+  // This method definition for findAllDepartments which was defined in the DB class. 
+  findAllDepartments() {
+    // utilizing a promise method once again to execute the SQL query. This query selects all columns from the department table.
+    return this.connection.promise().query(
+      "SELECT department.id, department.name FROM department;"
+    );
+  }
+
+  // This method definition for viewDepartmentBudgets which was defined in the DB class. 
+  viewDepartmentBudgets() {
+    // This promise method is used to initiate the SQL query. The query is used to select the budget information for the department.
+    return this.connection.promise().query(
+        // The query is used to join employee, role, and department tables.
+      "SELECT department.id, department.name, SUM(role.salary) AS utilized_budget FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id GROUP BY department.id, department.name;"
+    );
+  }
+
+  // This is similar as when creating the role. 
+  createDepartment(department) {
+    return this.connection.promise().query("INSERT INTO department SET ?", department);
+  }
+
+  // Similar to when the removeRole method. 
+  // Deleting department from the department table.
+  removeDepartment(departmentId) {
+    return this.connection.promise().query(
+      "DELETE FROM department WHERE id = ?",
+      departmentId
+    );
+  }
+
+  findAllEmployeesByDepartment(departmentId) {
+    return this.connection.promise().query(
+      "SELECT employee.id, employee.first_name, employee.last_name, role.title FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department department on role.department_id = department.id WHERE department.id = ?;",
+      departmentId
+    );
+  }
+
+  findAllEmployeesByManager(managerId) {
+    return this.connection.promise().query(
+      "SELECT employee.id, employee.first_name, employee.last_name, department.name AS department, role.title FROM employee LEFT JOIN role on role.id = employee.role_id LEFT JOIN department ON department.id = role.department_id WHERE manager_id = ?;",
+      managerId
+    );
+  }
+}
+
+module.exports = new DB(connection);
