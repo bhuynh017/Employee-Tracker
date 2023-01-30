@@ -410,16 +410,69 @@ function viewEmployeesByDepartment() {
                 type: "list",
                 name: "roleId",
                 message:
-                  "Which employee do you want to remove?",
+                  "Which employee's role do you want to remove?",
                 choices: roleChoices
               }
             ])
               .then(res => db.removeRole(res.roleId))
-              .then(() => console.log("Removed role from the database"))
+              .then(() => console.log("Removed employee's role from the database"))
               .then(() => loadMainPrompts())
           })
       }
       
+
+      function viewDepartments() {
+        db.findAllDepartments()
+          .then(([rows]) => {
+            let departments = rows;
+            console.log("\n");
+            console.table(departments);
+          })
+          .then(() => loadMainPrompts());
+      }
+      
+      // Add a department
+      function addDepartment() {
+        prompt([
+          {
+            name: "name",
+            message: "What is the name of the department?"
+          }
+        ])
+          .then(res => {
+            let name = res;
+            db.createDepartment(name)
+              .then(() => console.log(`Added ${name.name} to the database`))
+              .then(() => loadMainPrompts())
+          })
+      }
+      
+      // creating function to removeDepartment.
+      function removeDepartment() {
+        // accessing db to findAllDepartments.
+        db.findAllDepartments()
+          .then(([rows]) => {
+            let departments = rows;
+            const departmentChoices = departments.map(({ id, name }) => ({
+              name: name,
+              value: id
+            }));
+      
+            // displaying set of quetsions to remove the department.
+            prompt({
+              type: "list",
+              name: "departmentId",
+              message:
+                "Which department would you like to remove?",
+              choices: departmentChoices
+            })
+            // prompts the user that the department has been removed.
+              .then(res => db.removeDepartment(res.departmentId))
+              .then(() => console.log(`Removed department from the database`))
+              .then(() => loadMainPrompts())
+          })
+      }
+
 
 // When the user exits the application.
   function quit() {
