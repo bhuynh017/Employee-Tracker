@@ -166,6 +166,35 @@ function viewEmployeesByDepartment() {
           });
       }
 
+      // this function is to remove an employee from the database. 
+      function removeEmployee() {
+        // retrieving a list of employees in the database.
+        db.findAllEmployees()
+          .then(([rows]) => {
+            let employees = rows;
+            const employeeChoices = employees.map(({ id, first_name, last_name }) => ({
+              name: `${first_name} ${last_name}`,
+              value: id
+            }));
+      
+            // prompts the user to select and asking them which employee to remove. 
+            prompt([
+              {
+                type: "list",
+                name: "employeeId",
+                message: "Which employee do you want to remove?",
+                choices: employeeChoices
+              }
+            ])
+              .then(res => db.removeEmployee(res.employeeId))
+              // Notifying that the employee has been removed.
+              .then(() => console.log("The employee was removed from the database"))
+              // Returning back to the MainPrompts.
+              .then(() => loadMainPrompts())
+          })
+      }
+
+      
 // When the user exits the application.
   function quit() {
     console.log("Goodbye!");
