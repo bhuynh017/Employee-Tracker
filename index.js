@@ -1,4 +1,6 @@
+// Using inquirer npm package for user prompts.
 const { prompt, default: inquirer } = require("inquirer");
+// Including a logo created by asciiart-logo
 const logo = require('asciiart-logo');
 const db = require("./db");
 require("console.table");
@@ -14,6 +16,7 @@ function init() {
     loadMainPrompts();
   }
 
+  // Utilizing prompt() method from inquirer to show the user the question and the choices.
   function loadMainPrompts() {
     prompt([
       {
@@ -34,7 +37,8 @@ function init() {
       }
     ]).then(res => {
       let choice = res.choice;
-      // Call the appropriate function depending on what the user chose
+      // Begins the swich statements and starts a new case. 
+      // When the user chooses the prior options, then it will call the function. 
       switch (choice) {
         case "VIEW_EMPLOYEES":
           viewEmployees();
