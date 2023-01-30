@@ -392,6 +392,35 @@ function viewEmployeesByDepartment() {
           })
       }
 
+      // creating function to removeRoles
+      function removeRole() {
+        // calling db to findallroles first.
+        db.findAllRoles()
+          .then(([rows]) => {
+            let roles = rows;
+            // mapping the roles to the id and title.
+            const roleChoices = roles.map(({ id, title }) => ({
+              name: title,
+              value: id
+            }));
+      
+            // displaying questions which the user needs to do in order to proceed with application.
+            prompt([
+              {
+                type: "list",
+                name: "roleId",
+                message:
+                  "Which employee do you want to remove?",
+                choices: roleChoices
+              }
+            ])
+              .then(res => db.removeRole(res.roleId))
+              .then(() => console.log("Removed role from the database"))
+              .then(() => loadMainPrompts())
+          })
+      }
+      
+
 // When the user exits the application.
   function quit() {
     console.log("Goodbye!");
