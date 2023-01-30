@@ -88,7 +88,7 @@ function init() {
     }
     )
   }
-
+// findAllEmployees retrieves all employees from the database. Then displays it in the console. 
   function viewEmployees() {
     db.findAllEmployees()
     .then(([rows]) => {
@@ -99,10 +99,38 @@ function init() {
     .then(() => loadMainPrompts());
   }
 
+  // Retrieves departments from the database by calling dbFindAllDepartments. 
+function viewEmployeesByDepartment() {
+    db.findAllDepartments()
+    .then(([rows]) => {
+        let departments = rows;
+        const departmentChoices = departments.map(({ id, name }) => ({
+            name: name,
+            value: id
+          }));
+// This creates an array of choices that are used in a prompt. The user can then select which department.
+          prompt([
+            {
+              type: "list",
+              name: "departmentId",
+              message: "Which department would you like to see employees for?",
+              choices: departmentChoices
+            }
+          ])
+        // the departmentId is passed through as a parameter to db.FindAllEmployeesByDepartment which gathers all employees in the specific department.
+            .then(res => db.findAllEmployeesByDepartment(res.departmentId))
+            .then(([rows]) => {
+              let employees = rows;
+              console.log("\n");
+              console.table(employees);
+            })
+            // The main Prompts are displayed once again.
+            .then(() => loadMainPrompts())
+        });
+    }
 
 
-
-
+// When the user exits the application.
   function quit() {
     console.log("Goodbye!");
     process.exit();
