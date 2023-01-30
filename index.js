@@ -194,6 +194,55 @@ function viewEmployeesByDepartment() {
           })
       }
 
+      // This function updates the role of the employee in the db. 
+      function updateEmployeeRole() {
+        // retrieving employees from the database.
+        db.findAllEmployees()
+          .then(([rows]) => {
+            let employees = rows;
+            // mapping employees data with the list of choices
+            const employeeChoices = employees.map(({ id, first_name, last_name }) => ({
+              name: `${first_name} ${last_name}`,
+              value: id
+            }));
+      
+            // prompting the choices and then selecting an employee who needs to be updated.
+            prompt([
+              {
+                type: "list",
+                name: "employeeId",
+                message: "Which employee's role do you want to update?",
+                choices: employeeChoices
+              }
+            ])
+              .then(res => {
+                let employeeId = res.employeeId;
+                // when employee is selected it then calls the findAllRoles to retrieve roles from db.
+                db.findAllRoles()
+                  .then(([rows]) => {
+                    let roles = rows;
+                    // mapping the roles data and the choices with the roleId
+                    const roleChoices = roles.map(({ id, title }) => ({
+                      name: title,
+                      value: id
+                    }));
+      
+                    // prompts if you want to reasign the employee 
+                    prompt([
+                      {
+                        type: "list",
+                        name: "roleId",
+                        message: "Which role do you want to assign the selected employee?",
+                        choices: roleChoices
+                      }
+                    ])
+                      .then(res => db.updateEmployeeRole(employeeId, res.roleId))
+                      .then(() => console.log("Updated employee's role"))
+                      .then(() => loadMainPrompts())
+                  });
+              });
+          })
+      }
       
 // When the user exits the application.
   function quit() {
