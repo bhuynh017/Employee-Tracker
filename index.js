@@ -129,6 +129,42 @@ function viewEmployeesByDepartment() {
         });
     }
 
+    // This function allows the user to see the list of employees.
+    function viewEmployeesByManager() {
+        // retrieving employees from the database and stores it in the managers variable. 
+        db.findAllEmployees()
+          .then(([rows]) => {
+            let managers = rows;
+            // mapping the employees from the database 
+            const managerChoices = managers.map(({ id, first_name, last_name }) => ({
+              name: `${first_name} ${last_name}`,
+              value: id
+            }));
+
+            // prompts the user to select the employee. Calling the choices: "managerChoices"
+            prompt([
+              {
+                type: "list",
+                name: "managerId",
+                message: "Which employee do you want to see direct reports for?",
+                choices: managerChoices
+              }
+            ])
+            // Calling the db.findAllEmployeesBYManger with the selected manager's id.
+              .then(res => db.findAllEmployeesByManager(res.managerId))
+              .then(([rows]) => {
+                let employees = rows;
+                console.log("\n");
+                if (employees.length === 0) {
+                  console.log("The selected employee has no direct reports");
+                } else {
+                  console.table(employees);
+                }
+              })
+              // Reloads MainPrompts.
+              .then(() => loadMainPrompts())
+          });
+      }
 
 // When the user exits the application.
   function quit() {
