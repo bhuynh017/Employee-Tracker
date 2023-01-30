@@ -20,4 +20,4 @@
 * https://drive.google.com/file/d/1N0c4mIpQb3rQoDHwEPqny7FTnqoxY5eu/view
 
 ## GitHub Link
-
+* https://bhuynh017.github.io/Employee-Tracker/ 
