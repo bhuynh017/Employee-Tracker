@@ -342,7 +342,56 @@ function viewEmployeesByDepartment() {
           });
       }
       
+      // finding all roles in the db and displays them.
+      function viewRoles() {
+        db.findAllRoles()
+          .then(([rows]) => {
+            let roles = rows;
+            console.log("\n");
+            console.table(roles);
+          })
+          .then(() => loadMainPrompts());
+      }
       
+      // Creating a new role in the database
+      function addRole() {
+        // begins by findAllDepartments in the database.
+        db.findAllDepartments()
+          .then(([rows]) => {
+            let departments = rows;
+            const departmentChoices = departments.map(({ id, name }) => ({
+              name: name,
+              value: id
+            }));
+      
+            // displaying the next set of questions for the user to answer.
+            prompt([
+              {
+                name: "title",
+                message: "Please enter the role's title below.."
+              },
+              {
+                name: "salary",
+                message: "Please enter the role's salary below."
+              },
+              {
+                type: "list",
+                name: "department_id",
+                message: "Which role does the department belong to? Enter the department id below.",
+                choices: departmentChoices
+              }
+            ])
+              .then(role => {
+                // creating the role.
+                db.createRole(role)
+                // adding the role to the db.
+                  .then(() => console.log(`Added ${role.title} to the database`))
+                  // Prompting the application to load the MainPrompts.
+                  .then(() => loadMainPrompts())
+              })
+          })
+      }
+
 // When the user exits the application.
   function quit() {
     console.log("Goodbye!");
