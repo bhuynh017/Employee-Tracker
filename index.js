@@ -88,3 +88,23 @@ function init() {
     }
     )
   }
+
+  function viewEmployees() {
+    db.findAllEmployees()
+    .then(([rows]) => {
+        let employees =rows;
+        console.log("\n");
+        console.table(employees);
+    })
+    .then(() => loadMainPrompts());
+  }
+
+
+
+
+
+  function quit() {
+    console.log("Goodbye!");
+    process.exit();
+  }
+  
