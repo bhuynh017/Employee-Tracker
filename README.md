@@ -17,7 +17,7 @@
 
 ## Walkthrough Video
 
-* https://drive.google.com/file/d/1N0c4mIpQb3rQoDHwEPqny7FTnqoxY5eu/view
+* https://drive.google.com/file/d/1jRicexZHiLQtdts-lMToG7wJRyhfC57I/view
 
 ## GitHub Link
 * https://bhuynh017.github.io/Employee-Tracker/ 
