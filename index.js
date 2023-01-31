@@ -221,7 +221,7 @@ function init() {
               // Notifying that the employee has been removed.
               .then(() => console.log("The employee was removed from the database"))
               // Returning back to the MainPrompts.
-              .then(() => loadMainPrompts())
+              .then(() => loadHomePage())
           })
       }
 
@@ -282,7 +282,7 @@ function init() {
             console.log("\n");
             console.table(departments);
           })
-          .then(() => loadMainPrompts());
+          .then(() => loadHomePage());
       }
       
       // Add a department
@@ -334,7 +334,7 @@ function init() {
             console.log("\n");
             console.table(roles);
           })
-          .then(() => loadMainPrompts());
+          .then(() => loadHomePage());
       }
       
       // Creating a new role in the database

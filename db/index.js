@@ -38,14 +38,6 @@ findAllEmployees() {
     );
   }
 
-  // Similar to the above but updating the EmployeeManager.
-  updateEmployeeManager(employeeId, managerId) {
-    return this.connection.promise().query(
-      "UPDATE employee SET manager_id = ? WHERE id = ?",
-      [managerId, employeeId]
-    );
-  }
-
   // this method is used to select all the columns from the role table and find the data from department. 
   findAllRoles() {
     return this.connection.promise().query(
@@ -71,15 +63,6 @@ findAllEmployees() {
     );
   }
 
-  // This method definition for viewDepartmentBudgets which was defined in the DB class. 
-  viewDepartmentBudgets() {
-    // This promise method is used to initiate the SQL query. The query is used to select the budget information for the department.
-    return this.connection.promise().query(
-        // The query is used to join employee, role, and department tables.
-      "SELECT department.id, department.name, SUM(role.salary) AS utilized_budget FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department on role.department_id = department.id GROUP BY department.id, department.name;"
-    );
-  }
-
   // This is similar as when creating the role. 
   createDepartment(department) {
     return this.connection.promise().query("INSERT INTO department SET ?", department);
@@ -98,13 +81,6 @@ findAllEmployees() {
     return this.connection.promise().query(
       "SELECT employee.id, employee.first_name, employee.last_name, role.title FROM employee LEFT JOIN role on employee.role_id = role.id LEFT JOIN department department on role.department_id = department.id WHERE department.id = ?;",
       departmentId
-    );
-  }
-
-  findAllEmployeesByManager(managerId) {
-    return this.connection.promise().query(
-      "SELECT employee.id, employee.first_name, employee.last_name, department.name AS department, role.title FROM employee LEFT JOIN role on role.id = employee.role_id LEFT JOIN department ON department.id = role.department_id WHERE manager_id = ?;",
-      managerId
     );
   }
 }
